@@ -1,22 +1,11 @@
-import { TitleCasePipe, isPlatformBrowser } from '@angular/common';
-import { Inject } from '@angular/core';
-import {
-  Component,
-  AfterViewInit,
-  OnDestroy,
-  NgZone,
-  ChangeDetectorRef,
-  PLATFORM_ID,
-  ChangeDetectionStrategy,
-  afterNextRender,
-} from '@angular/core';
+import { TitleCasePipe } from '@angular/common';
+import { Component, AfterViewInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   templateUrl: './navbar.component.html',
   imports: [TitleCasePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent implements AfterViewInit, OnDestroy {
   scrolled = false;
@@ -26,7 +15,10 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
 
   sections = ['about', 'services', 'reviews', 'contact'];
 
-  constructor(private zone: NgZone, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    private zone: NgZone,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   private observer!: IntersectionObserver;
   private destroy = false;
@@ -41,12 +33,8 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    afterNextRender(() => {
-      this.initObserver();
-      this.initScrollProgress();
-    });
+    this.initObserver();
+    this.initScrollProgress();
   }
 
   ngOnDestroy() {
@@ -56,24 +44,25 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
       this.observer.disconnect();
     }
 
-    if (isPlatformBrowser(this.platformId)) {
-      window.removeEventListener('scroll', this.onScroll);
-    }
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   private initObserver() {
+    if (typeof window === 'undefined') return;
+
     this.observer = new IntersectionObserver(
       (entries) => {
         let bestCandidate: string | null = null;
-        let minDistance = Infinity;
+        let minOffset = Infinity;
 
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
 
-          const distance = Math.abs(entry.boundingClientRect.top);
+          const rect = entry.boundingClientRect;
+          const offset = Math.abs(rect.top);
 
-          if (distance < minDistance) {
-            minDistance = distance;
+          if (offset < minOffset) {
+            minOffset = offset;
             bestCandidate = entry.target.id;
           }
         }
@@ -86,16 +75,17 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
         }
       },
       {
+        root: null,
         threshold: 0,
         rootMargin: '-40% 0px -40% 0px',
-      }
+      },
     );
 
-    this.sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) {
-        this.observer.observe(el);
-      }
+    requestAnimationFrame(() => {
+      this.sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) this.observer.observe(el);
+      });
     });
   }
 
@@ -114,16 +104,12 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
       requestAnimationFrame(() => {
         const scrollY = window.scrollY;
         const docHeight =
-          document.documentElement.scrollHeight -
-          document.documentElement.clientHeight;
+          document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-        const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+        const progress = (scrollY / docHeight) * 100;
         const scrolled = scrollY > 20;
 
-        if (
-          progress !== this.scrollProgress ||
-          scrolled !== this.scrolled
-        ) {
+        if (progress !== this.scrollProgress || scrolled !== this.scrolled) {
           this.zone.run(() => {
             this.scrollProgress = progress;
             this.scrolled = scrolled;
