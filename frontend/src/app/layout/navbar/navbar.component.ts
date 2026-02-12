@@ -3,13 +3,15 @@ import {
   Component,
   AfterViewInit,
   OnDestroy,
+  NgZone,
+  ChangeDetectorRef,
 } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   templateUrl: './navbar.component.html',
-  imports: [TitleCasePipe]
+  imports: [TitleCasePipe],
 })
 export class NavbarComponent implements AfterViewInit, OnDestroy {
   scrolled = false;
@@ -19,7 +21,11 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
 
   sections = ['about', 'services', 'reviews', 'contact'];
 
+  constructor(private zone: NgZone, private cdr: ChangeDetectorRef) {}
+
   private observer!: IntersectionObserver;
+  private destroy = false;
+  private ticking = false;
 
   toggleMenu() {
     this.mobileOpen = !this.mobileOpen;
@@ -35,43 +41,76 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.observer) this.observer.disconnect();
+    this.destroy = true;
+
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   private initObserver() {
     this.observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        for (const entry of entries) {
           if (entry.isIntersecting) {
-            this.activeSection = entry.target.id;
+            const id = entry.target.id;
+
+            if (id !== this.activeSection) {
+              this.zone.run(() => {
+                this.activeSection = id;
+                this.cdr.markForCheck();
+              });
+            }
           }
-        });
+        }
       },
       {
         root: null,
         threshold: 0.6,
-      }
+        rootMargin: '0px 0px -20% 0px',
+      },
     );
 
-    this.sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) this.observer.observe(el);
+    requestAnimationFrame(() => {
+      this.sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) this.observer.observe(el);
+      });
     });
   }
 
   private initScrollProgress() {
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-
-      this.scrollProgress = (scrollY / docHeight) * 100;
-      this.scrolled = scrollY > 20;
-
-      if (scrollY < window.innerHeight - 120) {
-        this.activeSection = '';
-      }
+    this.zone.runOutsideAngular(() => {
+      window.addEventListener('scroll', this.onScroll, { passive: true });
     });
   }
+
+  private onScroll = () => {
+    if (this.destroy) return;
+
+    if (!this.ticking) {
+      this.ticking = true;
+
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const docHeight =
+          document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+        const progress = (scrollY / docHeight) * 100;
+        const scrolled = scrollY > 20;
+
+        if (progress !== this.scrollProgress || scrolled !== this.scrolled) {
+          this.zone.run(() => {
+            this.scrollProgress = progress;
+            this.scrolled = scrolled;
+            this.cdr.markForCheck();
+          });
+        }
+
+        this.ticking = false;
+      });
+    }
+  };
 }
