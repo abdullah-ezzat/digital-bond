@@ -1,10 +1,14 @@
-import { TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, isPlatformBrowser } from '@angular/common';
+import { Inject } from '@angular/core';
 import {
   Component,
   AfterViewInit,
   OnDestroy,
   NgZone,
   ChangeDetectorRef,
+  PLATFORM_ID,
+  ChangeDetectionStrategy,
+  afterNextRender,
 } from '@angular/core';
 
 @Component({
@@ -12,6 +16,7 @@ import {
   standalone: true,
   templateUrl: './navbar.component.html',
   imports: [TitleCasePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent implements AfterViewInit, OnDestroy {
   scrolled = false;
@@ -21,7 +26,7 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
 
   sections = ['about', 'services', 'reviews', 'contact'];
 
-  constructor(private zone: NgZone, private cdr: ChangeDetectorRef) {}
+  constructor(private zone: NgZone, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   private observer!: IntersectionObserver;
   private destroy = false;
@@ -36,8 +41,12 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.initObserver();
-    this.initScrollProgress();
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    afterNextRender(() => {
+      this.initObserver();
+      this.initScrollProgress();
+    });
   }
 
   ngOnDestroy() {
@@ -47,37 +56,46 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
       this.observer.disconnect();
     }
 
-    window.removeEventListener('scroll', this.onScroll);
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('scroll', this.onScroll);
+    }
   }
 
   private initObserver() {
     this.observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
+        let bestCandidate: string | null = null;
+        let minDistance = Infinity;
 
-            if (id !== this.activeSection) {
-              this.zone.run(() => {
-                this.activeSection = id;
-                this.cdr.markForCheck();
-              });
-            }
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+
+          const distance = Math.abs(entry.boundingClientRect.top);
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            bestCandidate = entry.target.id;
           }
+        }
+
+        if (bestCandidate && bestCandidate !== this.activeSection) {
+          this.zone.run(() => {
+            this.activeSection = bestCandidate!;
+            this.cdr.markForCheck();
+          });
         }
       },
       {
-        root: null,
-        threshold: 0.6,
-        rootMargin: '0px 0px -20% 0px',
-      },
+        threshold: 0,
+        rootMargin: '-40% 0px -40% 0px',
+      }
     );
 
-    requestAnimationFrame(() => {
-      this.sections.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) this.observer.observe(el);
-      });
+    this.sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        this.observer.observe(el);
+      }
     });
   }
 
@@ -96,12 +114,16 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
       requestAnimationFrame(() => {
         const scrollY = window.scrollY;
         const docHeight =
-          document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
 
-        const progress = (scrollY / docHeight) * 100;
+        const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
         const scrolled = scrollY > 20;
 
-        if (progress !== this.scrollProgress || scrolled !== this.scrolled) {
+        if (
+          progress !== this.scrollProgress ||
+          scrolled !== this.scrolled
+        ) {
           this.zone.run(() => {
             this.scrollProgress = progress;
             this.scrolled = scrolled;
