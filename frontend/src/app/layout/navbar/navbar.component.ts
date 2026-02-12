@@ -1,5 +1,11 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, AfterViewInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  OnDestroy,
+  NgZone,
+  ChangeDetectorRef,
+} from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -15,10 +21,7 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
 
   sections = ['about', 'services', 'reviews', 'contact'];
 
-  constructor(
-    private zone: NgZone,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  constructor(private zone: NgZone, private cdr: ChangeDetectorRef) {}
 
   private observer!: IntersectionObserver;
   private destroy = false;
@@ -48,36 +51,25 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
   }
 
   private initObserver() {
-    if (typeof window === 'undefined') return;
-
     this.observer = new IntersectionObserver(
       (entries) => {
-        let bestCandidate: string | null = null;
-        let minOffset = Infinity;
-
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
 
-          const rect = entry.boundingClientRect;
-          const offset = Math.abs(rect.top);
-
-          if (offset < minOffset) {
-            minOffset = offset;
-            bestCandidate = entry.target.id;
+            if (id !== this.activeSection) {
+              this.zone.run(() => {
+                this.activeSection = id;
+                this.cdr.markForCheck();
+              });
+            }
           }
-        }
-
-        if (bestCandidate && bestCandidate !== this.activeSection) {
-          this.zone.run(() => {
-            this.activeSection = bestCandidate!;
-            this.cdr.markForCheck();
-          });
         }
       },
       {
         root: null,
-        threshold: 0,
-        rootMargin: '-40% 0px -40% 0px',
+        threshold: 0.6,
+        rootMargin: '0px 0px -20% 0px',
       },
     );
 
