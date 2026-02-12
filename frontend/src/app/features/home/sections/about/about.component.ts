@@ -1,0 +1,11 @@
+import { Component } from '@angular/core';
+import { ScrollAnimateDirective } from '@/shared/scroll-animate.directive';
+import { SectionTitleComponent } from '@/components/ui/section-title/section-title.component';
+
+@Component({
+  selector: 'app-about',
+  standalone: true,
+  imports: [ScrollAnimateDirective, SectionTitleComponent],
+  templateUrl: './about.component.html',
+})
+export class AboutComponent {}

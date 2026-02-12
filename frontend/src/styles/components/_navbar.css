@@ -1,0 +1,87 @@
+.nav-link {
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.25s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 0;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+}
+
+.active-nav {
+  color: var(--primary);
+}
+
+.active-nav::after {
+  width: 100%;
+}
+
+.hamburger {
+  width: 32px;
+  height: 32px;
+  position: relative;
+}
+
+.hamburger span,
+.hamburger span::before,
+.hamburger span::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background: #111;
+  left: 4px;
+  transition: all 0.3s ease;
+}
+
+.hamburger span {
+  top: 15px;
+}
+
+.hamburger span::before {
+  top: -7px;
+}
+
+.hamburger span::after {
+  top: 7px;
+}
+
+.hamburger span.open {
+  background: transparent;
+}
+
+.hamburger span.open::before {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+.hamburger span.open::after {
+  transform: rotate(-45deg);
+  top: 0;
+}
+
+.scroll-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ab0202, #ff4d4d);
+  width: 0%;
+  transition: width 0.1s linear;
+  z-index: 60;
+}

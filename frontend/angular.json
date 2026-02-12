@@ -1,0 +1,109 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": "03105bc0-be31-47e8-b864-dddec787ad3b"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "frontend": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "src/server.ts"
+            },
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "src/styles/main.css"
+            ],
+
+            "inlineStyleLanguage": "css",
+            "aot": true,
+            "optimization": true,
+            "extractLicenses": true,
+            "sourceMap": false,
+            "namedChunks": false
+          },
+
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "aot": true,
+              "extractLicenses": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "outputHashing": "all",
+
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "250kB",
+                  "maximumError": "350kB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "3kB",
+                  "maximumError": "6kB"
+                },
+                {
+                  "type": "bundle",
+                  "name": "main",
+                  "maximumWarning": "200kB",
+                  "maximumError": "300kB"
+                }
+              ]
+            },
+
+            "development": {
+              "optimization": false,
+              "aot": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+
+          "defaultConfiguration": "production"
+        },
+
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 4200
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "frontend:build:production"
+            },
+            "development": {
+              "buildTarget": "frontend:build:development",
+              "hmr": true
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {}
+        }
+      }
+    }
+  }
+}

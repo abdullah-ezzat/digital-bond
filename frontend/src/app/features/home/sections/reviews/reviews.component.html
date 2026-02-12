@@ -1,0 +1,47 @@
+<section id="reviews" class="py-28 bg-white">
+  <div class="max-w-6xl mx-auto px-6 text-center fade-up" scrollAnimate>
+    <app-section-title title="Client Reviews"></app-section-title>
+
+    <!-- carousel wrapper -->
+    <div class="reviews-wrapper mt-16">
+      <!-- prev button -->
+      <button
+        class="review-nav-btn review-prev"
+        (click)="scrollPrev()"
+        aria-label="Previous review"
+      >
+        ←
+      </button>
+
+      <!-- carousel -->
+      <div
+        #track
+        class="reviews-track"
+      >
+        @for (r of reviews; track r.name) {
+          <div class="review-card">
+            <div class="stars">★★★★★</div>
+
+            <p class="review-text">
+              “{{ r.feedback }}”
+            </p>
+
+            <div class="review-author">
+              <strong>{{ r.name }}</strong>
+              <span>{{ r.role }}</span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- next button -->
+      <button
+        class="review-nav-btn review-next"
+        (click)="scrollNext()"
+        aria-label="Next review"
+      >
+        →
+      </button>
+    </div>
+  </div>
+</section>
