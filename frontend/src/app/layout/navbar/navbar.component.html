@@ -1,0 +1,72 @@
+<header
+  class="fixed top-0 left-0 w-full z-50 transition-all duration-300"
+  [class.bg-white/80]="scrolled"
+  [class.backdrop-blur-xl]="scrolled"
+  [class.shadow-lg]="scrolled"
+>
+  <div class="scroll-progress" [style.width.%]="scrollProgress"></div>
+
+  <nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="/digital-bond/" class="flex items-center gap-3">
+      <img
+        src="assets/logo/logo-96.webp"
+        srcset="
+          assets/logo/logo-48.webp   48w,
+          assets/logo/logo-96.webp   96w,
+          assets/logo/logo-192.webp 192w
+        "
+        sizes="48px"
+        width="48"
+        class="h-10 w-10"
+        alt="Digital Bond logo"
+      />
+
+      <span
+        class="text-xl font-bold bg-linear-to-r from-(--primary) to-red-500 bg-clip-text text-transparent"
+      >
+        Digital Bond
+      </span>
+    </a>
+
+    <ul class="hidden md:flex gap-10 text-gray-800 font-medium">
+      @for (item of sections; track item) {
+        <li>
+          <a
+            [href]="'#' + item"
+            class="nav-link"
+            aria-label="{{ item | titlecase }}"
+            [class.active-nav]="activeSection === item"
+          >
+            {{ item | titlecase }}
+          </a>
+        </li>
+      }
+    </ul>
+
+    <a href="#contact" aria-label="Get Started" class="hidden md:inline-block cta-btn">
+      Get Started
+    </a>
+
+    <button class="md:hidden hamburger" (click)="toggleMenu()" aria-label="Toggle menu">
+      <span [class.open]="mobileOpen"></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" [class.open]="mobileOpen">
+    <div class="mobile-menu-inner">
+      @for (item of sections; track item) {
+        <a
+          [href]="'#' + item"
+          (click)="closeMenu()"
+          aria-label="{{ item | titlecase }}"
+          [class.active-nav]="activeSection === item"
+          class="mobile-link"
+        >
+          {{ item | titlecase }}
+        </a>
+      }
+
+      <a href="#contact" aria-label="Get Started" class="mobile-cta" (click)="closeMenu()"> Get Started </a>
+    </div>
+  </div>
+</header>
