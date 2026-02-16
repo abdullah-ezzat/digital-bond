@@ -1,22 +1,23 @@
 <section id="services" class="py-28 bg-gray-50">
   <div class="max-w-7xl mx-auto px-6">
     <div class="text-center fade-up" scrollAnimate>
-      <app-section-title title="Our Services"></app-section-title>
+      <app-section-title
+        [title]="services.title">
+      </app-section-title>
     </div>
+
     <div class="grid md:grid-cols-3 gap-10 mt-20">
-      @for (s of services; track s.title) {
-        <div
-          class="service-card fade-up"
-          scrollAnimate
-        >
+      @for (s of services.items; track s.title) {
+        <div class="service-card fade-up" scrollAnimate>
+
           <div class="service-icon-wrap">
             <img
               [src]="s.icon"
-              [alt]="s.title + ' Icon'"
+              [alt]="s.title"
               class="service-icon"
-              loading="lazy"
               width="36"
               height="36"
+              loading="lazy"
             />
           </div>
 
@@ -27,10 +28,6 @@
           <p class="text-gray-600 mt-3 text-sm leading-relaxed">
             {{ s.desc }}
           </p>
-
-          <div class="service-arrow">
-            →
-          </div>
         </div>
       }
     </div>

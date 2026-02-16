@@ -1,3 +1,4 @@
+import { TranslationService } from '@/core/services/translation';
 import { Component } from '@angular/core';
 
 @Component({
@@ -5,4 +6,10 @@ import { Component } from '@angular/core';
   standalone: true,
   templateUrl: './footer.component.html',
 })
-export class FooterComponent {}
+export class FooterComponent {
+  constructor(private t: TranslationService) {}
+
+  get footer() {
+    return this.t.current().footer;
+  }
+}

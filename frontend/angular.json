@@ -29,20 +29,20 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles/main.css"
-            ],
+            "styles": ["src/styles/main.css"],
 
             "inlineStyleLanguage": "css",
             "aot": true,
             "optimization": true,
             "extractLicenses": true,
             "sourceMap": false,
-            "namedChunks": false
+            "namedChunks": false,
+            "polyfills": ["@angular/localize/init"]
           },
 
           "configurations": {
             "production": {
+              "baseHref": "/digital-bond/",
               "optimization": true,
               "aot": true,
               "extractLicenses": true,
@@ -102,6 +102,14 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {}
+        },
+
+        "prerender": {
+          "builder": "@angular/build:prerender",
+          "options": {
+            "browserTarget": "frontend:build:production",
+            "routes": ["/en", "/ar"]
+          }
         }
       }
     }

@@ -1,0 +1,13 @@
+<div class="geo-wrapper">
+  @for (shape of shapes(); track shape.id) {
+    <div
+      [class]="'geo-shape ' + shape.type"
+      [style.width.px]="shape.size"
+      [style.height.px]="shape.size"
+      [style.opacity]="shape.opacity"
+      [style.transform]="
+        'translate3d(' + shape.x + 'px,' + shape.y + 'px,0) rotate(' + shape.rotation + 'deg)'
+      "
+    ></div>
+  }
+</div>

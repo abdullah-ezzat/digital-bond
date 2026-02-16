@@ -19,11 +19,11 @@
         alt="Digital Bond logo"
         class="h-10 w-10"
       />
-      <span class="text-2xl font-bold gradient-text"> Digital Bond </span>
+      <span class="text-2xl font-bold gradient-text">{{ footer.digitalBond }}</span>
       </div>
 
       <p class="mt-4 text-gray-600 max-w-xl mx-auto">
-        A new generation digital marketing agency blending creativity, performance, and technology.
+        {{ footer.description }}
       </p>
 
       <div class="flex justify-center gap-6 mt-8">
@@ -33,7 +33,7 @@
             target="_blank"
             rel="noopener"
             class="social-icon"
-            aria-label="Digital Bond on Facebook"
+            [aria-label]="footer.facebook"
           >
             <img src="/assets/svg/social-media/facebook-icon.svg" alt="" class="w-5 h-5" loading="lazy" />
           </a>
@@ -43,7 +43,7 @@
             target="_blank"
             rel="noopener"
             class="social-icon"
-            aria-label="Digital Bond on Instagram"
+            [aria-label]="footer.instagram"
           >
             <img src="/assets/svg/social-media/instagram-icon.svg" alt="" class="w-5 h-5" loading="lazy" />
           </a>
@@ -53,7 +53,7 @@
             target="_blank"
             rel="noopener"
             class="social-icon"
-            aria-label="Digital Bond on LinkedIn"
+            [aria-label]="footer.linkedin"
           >
             <img src="/assets/svg/social-media/linkedin-icon.svg" alt="" class="w-5 h-5" loading="lazy" />
           </a>
@@ -63,7 +63,7 @@
             target="_blank"
             rel="noopener"
             class="social-icon"
-            aria-label="Digital Bond on Whatsapp"
+            [aria-label]="footer.whatsapp"
           >
             <img src="/assets/svg/social-media/whatsapp-icon.svg" alt="" class="w-5 h-5" loading="lazy" />
           </a>
@@ -72,7 +72,7 @@
 
       <div class="h-px bg-gray-200 my-10"></div>
 
-      <p class="text-sm text-gray-500">© 2026 Digital Bond. All rights reserved.</p>
+      <p class="text-sm text-gray-500">{{ footer.rights }}</p>
     </div>
   </div>
 </footer>

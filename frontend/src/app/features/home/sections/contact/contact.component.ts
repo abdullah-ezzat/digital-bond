@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ScrollAnimateDirective } from '@/shared/scroll-animate.directive';
 import { SectionTitleComponent } from '@/components/ui/section-title/section-title.component';
+import { TranslationService } from '@/core/services/translation';
 
 @Component({
   selector: 'app-contact',
@@ -13,12 +14,16 @@ import { SectionTitleComponent } from '@/components/ui/section-title/section-tit
 export class ContactComponent {
   sent = false;
   form;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private t: TranslationService) {
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       message: ['', [Validators.required, Validators.minLength(5)]],
     });
+  }
+
+  get contactSection() {
+    return this.t.current().contact;
   }
 
   submit() {

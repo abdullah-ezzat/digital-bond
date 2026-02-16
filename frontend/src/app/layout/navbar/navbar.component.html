@@ -1,13 +1,13 @@
 <header
   class="fixed top-0 left-0 w-full z-50 transition-all duration-300"
-  [class.bg-white/80]="scrolled"
-  [class.backdrop-blur-xl]="scrolled"
-  [class.shadow-lg]="scrolled"
+  [class.bg-white/80]="scrolled()"
+  [class.backdrop-blur-xl]="scrolled()"
+  [class.shadow-lg]="scrolled()"
 >
-  <div class="scroll-progress" [style.width.%]="scrollProgress"></div>
+  <div class="scroll-progress" [style.width.%]="scrollProgress()"></div>
 
   <nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <a href="/" aria-label="Digital Bond" class="flex items-center gap-3">
+    <a href="/" [attr.aria-label]="nav.digitalBond" class="flex items-center gap-3">
       <img
         src="/assets/logo/logo-96.webp"
         srcset="
@@ -18,55 +18,118 @@
         sizes="48px"
         width="48"
         class="h-10 w-10"
-        alt="Digital Bond logo"
+        [alt]="nav.digitalBond"
       />
 
       <span
         class="text-xl font-bold bg-linear-to-r from-(--primary) to-red-500 bg-clip-text text-transparent"
       >
-        Digital Bond
+        {{ nav.digitalBond }}
       </span>
     </a>
 
     <ul class="hidden md:flex gap-10 text-gray-800 font-medium">
-      @for (item of sections; track item) {
+      @for (item of sections; track item.id) {
         <li>
           <a
-            [href]="'#' + item"
+            [routerLink]="[]"
+            [fragment]="item.id"
             class="nav-link"
-            aria-label="{{ item | titlecase }}"
-            [class.active-nav]="activeSection === item"
+            [attr.aria-label]="item.label()"
+            [class.active-nav]="activeSection() === item.id"
           >
-            {{ item | titlecase }}
+            {{ item.label() }}
           </a>
         </li>
       }
     </ul>
 
-    <a href="#contact" aria-label="Get Started" class="hidden md:inline-block cta-btn">
-      Get Started
-    </a>
+    <div class="hidden md:flex items-center gap-6">
+      <a [routerLink]="[]" fragment="contact" class="cta-btn">
+        {{ nav.getStarted }}
+      </a>
 
-    <button class="md:hidden hamburger" (click)="toggleMenu()" aria-label="Toggle menu">
-      <span [class.open]="mobileOpen"></span>
+      <div class="lang-switch">
+        <div
+          class="lang-slider"
+          [style.transform]="currentLang() === 'ar' ? 'translateX(100%)' : 'translateX(0%)'"
+        ></div>
+
+        <button
+          type="button"
+          class="lang-btn"
+          [class.active]="currentLang() === 'en'"
+          (click)="switchLang('en')"
+        >
+          EN
+        </button>
+
+        <button
+          type="button"
+          class="lang-btn"
+          [class.active]="currentLang() === 'ar'"
+          (click)="switchLang('ar')"
+        >
+          AR
+        </button>
+      </div>
+    </div>
+
+    <button class="md:hidden hamburger" (click)="toggleMenu()" [attr.aria-label]="nav.toggleMenu">
+      <span [class.open]="mobileOpen()"></span>
     </button>
   </nav>
 
-  <div class="mobile-menu" [class.open]="mobileOpen">
+  <div class="mobile-menu" [class.open]="mobileOpen()">
     <div class="mobile-menu-inner">
-      @for (item of sections; track item) {
+      @for (item of sections; track item.id) {
         <a
-          [href]="'#' + item"
+          [routerLink]="[]"
+          [fragment]="item.id"
+          class="nav-link"
+          [attr.aria-label]="item.label()"
+          [class.active-nav]="activeSection() === item.id"
           (click)="closeMenu()"
-          aria-label="{{ item | titlecase }}"
-          [class.active-nav]="activeSection === item"
-          class="mobile-link"
         >
-          {{ item | titlecase }}
+          {{ item.label() }}
         </a>
       }
 
-      <a href="#contact" aria-label="Get Started" class="mobile-cta" (click)="closeMenu()"> Get Started </a>
+      <a
+        [routerLink]="[]" fragment="contact"
+        [attr.aria-label]="nav.getStarted"
+        class="mobile-cta"
+        (click)="closeMenu()"
+      >
+        {{ nav.getStarted }}
+      </a>
+
+      <div class="flex flex-col items-center gap-6">
+        <div class="lang-switch">
+          <div
+            class="lang-slider"
+            [style.transform]="currentLang() === 'ar' ? 'translateX(100%)' : 'translateX(0%)'"
+          ></div>
+
+          <button
+            type="button"
+            class="lang-btn"
+            [class.active]="currentLang() === 'en'"
+            (click)="switchLang('en')"
+          >
+            EN
+          </button>
+
+          <button
+            type="button"
+            class="lang-btn"
+            [class.active]="currentLang() === 'ar'"
+            (click)="switchLang('ar')"
+          >
+            AR
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </header>

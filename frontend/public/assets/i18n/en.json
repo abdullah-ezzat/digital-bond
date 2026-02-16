@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "title": "Digital Bond | Premium Digital Marketing Agency",
+    "description": "Digital Bond is a modern digital marketing agency delivering high-impact growth, web experiences, and performance-driven strategies."
+  },
+
+  "nav": {
+    "digitalBond": "Digital Bond",
+    "about": "About",
+    "services": "Services",
+    "reviews": "Reviews",
+    "contact": "Contact",
+    "getStarted": "Get Started",
+    "toggleMenu": "Toggle menu"
+  },
+
+  "hero": {
+    "titleLine1": "We Build",
+    "titleHighlight": "Digital Experiences",
+    "titleLine2": "That Convert",
+    "subtitle": "A new generation digital agency blending creativity, performance, and technology.",
+    "ctaPrimary": "Start a Project",
+    "ctaSecondary": "Our Services"
+  },
+
+  "about": {
+    "title": "About Digital Bond",
+    "description": "We are a future-focused digital agency delivering high-impact marketing, modern web experiences, and scalable growth strategies for ambitious brands.",
+    "features": [
+      "Data-driven digital strategies",
+      "Modern web & mobile solutions",
+      "High-conversion marketing campaigns"
+    ],
+    "stats": {
+      "projects": "Projects",
+      "clients": "Clients",
+      "years": "Years"
+    },
+    "creative": "Creative",
+    "performance": "Performance"
+  },
+
+  "services": {
+    "title": "Our Services",
+    "items": [
+      {
+        "title": "Web Development",
+        "desc": "Modern, scalable, high-performance websites and web applications."
+      },
+      {
+        "title": "Digital Marketing",
+        "desc": "Performance-focused campaigns that maximize ROI and brand visibility."
+      },
+      {
+        "title": "Brand Strategy",
+        "desc": "Positioning, identity, and long-term brand growth strategies."
+      }
+    ]
+  },
+
+  "reviews": {
+    "title": "Client Reviews",
+    "prev": "Previous review",
+    "next": "Next review"
+  },
+
+  "contact": {
+    "title": "Let’s Build Something Great",
+    "subtitle": "Tell us about your project and we’ll contact you instantly.",
+    "successTitle": "Message Sent Successfully",
+    "successSubtitle": "We’ll reply to you shortly on WhatsApp.",
+    "namePlaceholder": "Your Name",
+    "emailPlaceholder": "Email Address",
+    "messagePlaceholder": "Tell us about your project...",
+    "errors": {
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email.",
+      "message": "Message must not be empty."
+    },
+    "submit": "Send Message"
+  },
+
+  "footer": {
+    "digitalBond": "Digital Bond",
+    "description": "A new generation digital marketing agency blending creativity, performance, and technology.",
+    "rights": "© 2026 Digital Bond. All rights reserved.",
+    "facebook": "Digital Bond on Facebook",
+    "instagram": "Digital Bond on Instagram",
+    "linkedin": "Digital Bond on LinkedIn",
+    "whatsapp": "Digital Bond on Whatsapp"
+  }
+}
