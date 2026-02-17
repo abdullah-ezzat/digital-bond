@@ -23,12 +23,7 @@
               "entry": "src/server.ts"
             },
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles/main.css"],
 
             "inlineStyleLanguage": "css",
@@ -43,6 +38,7 @@
           "configurations": {
             "production": {
               "baseHref": "/digital-bond/",
+              "deployUrl": "/digital-bond/",
               "optimization": true,
               "aot": true,
               "extractLicenses": true,
