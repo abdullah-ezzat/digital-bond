@@ -23,15 +23,15 @@
 
       <div class="grid grid-cols-3 gap-6 mt-10">
         <div class="about-stat">
-          <span>120+</span>
+          <span [countUp]="120"></span><span>+</span>
           <small>{{ about.stats?.projects }}</small>
         </div>
         <div class="about-stat">
-          <span>95+</span>
+          <span [countUp]="95"></span><span>+</span>
           <small>{{ about.stats?.clients }}</small>
         </div>
         <div class="about-stat">
-          <span>9+</span>
+          <span [countUp]="9"></span><span>+</span>
           <small>{{ about.stats?.years }}</small>
         </div>
       </div>

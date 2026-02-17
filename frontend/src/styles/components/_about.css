@@ -29,13 +29,14 @@
 }
 
 .about-stat span {
-  display: block;
+  display: inline-block;
   font-size: 26px;
   font-weight: 700;
   color: var(--primary);
 }
 
 .about-stat small {
+  display: block;
   font-size: 13px;
   color: #666;
 }
