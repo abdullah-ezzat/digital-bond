@@ -3,37 +3,37 @@
   "items": [
     {
       "title": "إدارة السوشيال ميديا",
-      "icon": "/assets/svg/services/social-media.svg",
+      "icon": "assets/svg/services/social-media.svg",
       "desc": "محتوى واستراتيجيات نمو عالية التأثير."
     },
     {
       "title": "تطوير المواقع",
-      "icon": "/assets/svg/services/web-development.svg",
+      "icon": "assets/svg/services/web-development.svg",
       "desc": "منصات ويب حديثة وسريعة وقابلة للتوسع."
     },
     {
       "title": "تطبيقات الموبايل",
-      "icon": "/assets/svg/services/mobile-apps.svg",
+      "icon": "assets/svg/services/mobile-apps.svg",
       "desc": "حلول تطبيقات أصلية وعبر المنصات."
     },
     {
       "title": "تحسين محركات البحث",
-      "icon": "/assets/svg/services/branding.svg",
+      "icon": "assets/svg/services/branding.svg",
       "desc": "تصدر نتائج البحث وجذب الجمهور المناسب."
     },
     {
       "title": "تسويق المؤثرين",
-      "icon": "/assets/svg/services/influencers.svg",
+      "icon": "assets/svg/services/influencers.svg",
       "desc": "الوصول إلى الجمهور من خلال أصوات موثوقة."
     },
     {
       "title": "حملات الرسائل النصية",
-      "icon": "/assets/svg/services/sms.svg",
+      "icon": "assets/svg/services/sms.svg",
       "desc": "رسائل مباشرة وعالية التحويل."
     },
     {
       "title": "إنتاج الوسائط",
-      "icon": "/assets/svg/services/production.svg",
+      "icon": "assets/svg/services/production.svg",
       "desc": "محتوى فيديو ومرئي احترافي."
     }
   ]
